@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<zg-template id="todo">
+		<li> {content} </li>
+	</zg-template>
+
+	<script src="https://cdn.jsdelivr.net/npm/imperative-html@0.1/dist/global/elements.min.js"></script>
+	<script src="/zg-core.js"></script>
+	<script src="/zg-forms.js"></script>
+	<script src="/test.js"></script>
+</head>
+<body>
+	<p>Todo list:</p>
+	<ul id="todos">
+	</ul>
+
+	<form zg-submit="addTodo">
+		<input type="text" name="todo" placeholder="todo">
+		<input type="submit">
+	</form>
+</body>
+</html>
