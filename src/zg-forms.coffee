@@ -23,4 +23,3 @@ window.addEventListener "load", ->
 			# prevent event default
 			event.preventDefault
 			false
-			# window[fn_name](new FormData element)

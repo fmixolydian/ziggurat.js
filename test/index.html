@@ -5,14 +5,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 
-	<zg-template id="todo">
-		<li> {content} </li>
+	<zg-template id="todo" hidden>
+		<li> [ <zg-var> todo </zg-var> ] </li>
 	</zg-template>
 
 	<script src="https://cdn.jsdelivr.net/npm/imperative-html@0.1/dist/global/elements.min.js"></script>
 	<script src="/zg-core.js"></script>
 	<script src="/zg-forms.js"></script>
-	<script src="/test.js"></script>
+	<script src="/zg-mirror.js"></script>
 </head>
 <body>
 	<p>Todo list:</p>
@@ -23,5 +23,11 @@
 		<input type="text" name="todo" placeholder="todo">
 		<input type="submit">
 	</form>
+
+	<p id="counter">'<zg-bind name="counter"></zg-bind>'</p>
+	<button onclick="counter.v++">+</button>
+	<button onclick="counter.v--">-</button>
+
+	<script src="/test.js"></script>
 </body>
 </html>
