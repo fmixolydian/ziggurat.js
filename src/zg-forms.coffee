@@ -1,7 +1,3 @@
-if not zg?
-	throw new Error "cannot find zg.
-	did you forget to import zg-core first?"
-
 window.addEventListener "load", ->
 	for element in zg.queryall('form[zg-submit]')
 		fn_name = element.getAttribute "zg-submit"

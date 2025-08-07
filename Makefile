@@ -1,4 +1,4 @@
-TARGETS      := zg-core zg-forms zg-mirror
+TARGETS      := zg-core zg-forms zg-mirror zg-templates zg-stream
 TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
 
 # DIST FILES
@@ -10,9 +10,11 @@ build/ziggurat.js: $(TARGETS)
 
 # MODULES
 
-zg-core: build/zg-core.js
-zg-forms: build/zg-forms.js
-zg-mirror: build/zg-mirror.js
+zg-core:      build/zg-core.js
+zg-forms:     build/zg-forms.js
+zg-mirror:    build/zg-mirror.js
+zg-templates: build/zg-templates.js
+zg-stream:    build/zg-stream.js
 
 build/zg-%.js: src/zg-%.coffee
 	coffee -bcp $< > $@
