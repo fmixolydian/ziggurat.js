@@ -10,27 +10,20 @@ zg.create = function(name, data) {
     var child, elements, i, len, new_elements, ref;
     elements = div.cloneNode(true);
     new_elements = [];
-    // does the element have children?
-    if (elements.children != null) {
-      ref = elements.children;
-      // compile every child
-      for (i = 0, len = ref.length; i < len; i++) {
-        child = ref[i];
-        // depending on tag, replace with something
-        if (child.tagName != null) {
-          switch (child.tagName.toLowerCase()) {
-            case "zg-var":
-              child = document.createTextNode(zg.deepfind(data, child.innerHTML));
-          }
-        }
-        // if the child has children, build the child
-        if (child.children != null) {
-          child.replaceChildren(...(build(child, data)));
-        }
-        new_elements.push(child);
+    ref = elements.childNodes;
+    // compile every child
+    for (i = 0, len = ref.length; i < len; i++) {
+      child = ref[i];
+      // depending on tag, replace with something
+      switch (child.nodeName.toLowerCase()) {
+        case "zg-var":
+          child = document.createTextNode(zg.deepfind(data, child.innerHTML));
       }
-    } else {
-      new_elements = elements.childNodes;
+      // if the child has more children, build the child
+      if (child.children != null) {
+        child.replaceChildren(...(build(child, data)));
+      }
+      new_elements.push(child);
     }
     return new_elements;
   };

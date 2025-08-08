@@ -10,22 +10,17 @@ zg.create = (name, data) ->
 		elements = div.cloneNode true
 		new_elements = []
 
-		# does the element have children?
-		if elements.children?
-			# compile every child
-			for child in elements.children
-				# depending on tag, replace with something
-				if child.tagName?
-					switch (child.tagName.toLowerCase())
-						when "zg-var"
-							child = document.createTextNode zg.deepfind data, child.innerHTML
+		# compile every child
+		for child in elements.childNodes
+			# depending on tag, replace with something
+			switch (child.nodeName.toLowerCase())
+				when "zg-var"
+					child = document.createTextNode zg.deepfind data, child.innerHTML
 
-				# if the child has children, build the child
-				if child.children?
-					child.replaceChildren (build child, data)...
-				new_elements.push child
-		else
-			new_elements = elements.childNodes
+			# if the child has more children, build the child
+			if child.children?
+				child.replaceChildren (build child, data)...
+			new_elements.push child
 		new_elements
 
 	HTML.div build template, data

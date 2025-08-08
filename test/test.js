@@ -32,5 +32,6 @@ async function startStreaming() {
 	for await (let data of zg.stream.jsonl(
 			'https://h.sqrt5.eu/chunked?delay=50&type=names&split=random')) {
 		console.log(data)
+		stream.appendChild(zg.create("person", data))
 	}
 }

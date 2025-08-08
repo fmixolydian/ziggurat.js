@@ -1,3 +1,5 @@
+
+
 for element in zg.queryall('form[zg-submit]')
 	fn_name = element.getAttribute "zg-submit"
 	element.onsubmit = (event) ->

@@ -9,6 +9,12 @@
 		<li> [ <zg-var> todo </zg-var> ] </li>
 	</zg-template>
 
+	<zg-template id="person" hidden>
+		<span style="color: red"> <zg-var> name    </zg-var></span>
+		<span style="color: blue"><zg-var> surname </zg-var></span>
+		<br>
+	</zg-template>
+
 	<script src="https://cdn.jsdelivr.net/npm/imperative-html@0.1/dist/global/elements.min.js"></script>
 	<script src="/ziggurat.js" defer></script>
 </head>
@@ -32,6 +38,6 @@
 	<p id="stream" style="max-height: 200; overflow-y: scroll"></p>
 	<button onclick="startStreaming()">Make HTTP Request</button>
 
-	<script src="/test.js"></script>
+	<script src="/test.js" defer></script>
 </body>
 </html>
