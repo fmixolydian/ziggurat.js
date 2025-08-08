@@ -1,7 +1,3 @@
-if not zg?
-    throw new Error "cannot find zg.
-    did you forget to import zg-core first?"
-
 zg.mirror = class
 	constructor: (@name, _value) ->
 		Object.defineProperty @, "v",
