@@ -1,23 +1,25 @@
 TARGETS      := zg-core zg-forms zg-mirror zg-templates zg-stream
 TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
+   MIN_FILES := $(foreach target, $(TARGETS), build/$(target).min.js)
 
 # DIST FILES
 
 ziggurat: build/ziggurat.js
+ziggurat-min: build/ziggurat.min.js
 
-build/ziggurat.js: $(TARGETS)
+build/ziggurat.js: $(TARGET_FILES)
 	cat $(TARGET_FILES) > build/ziggurat.js
+
+build/ziggurat.min.js: $(MIN_FILES)
+	cat $(MIN_FILES)    > build/ziggurat.min.js
 
 # MODULES
 
-zg-core:      build/zg-core.js
-zg-forms:     build/zg-forms.js
-zg-mirror:    build/zg-mirror.js
-zg-templates: build/zg-templates.js
-zg-stream:    build/zg-stream.js
-
 build/zg-%.js: src/zg-%.coffee
 	coffee -bcp $< > $@
+
+build/%.min.js: build/%.js
+	minify $< -o $@
 
 # GENERAL RULES
 

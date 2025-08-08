@@ -1,0 +1,36 @@
+{
+  "name": "ziggurat.js",
+  "version": "0.2.2",
+  "description": "a tiny modular js library for templates and other shorthands",
+  "main": " ",
+  "scripts": {
+	"build": "make",
+    "test":  "make run",
+    "watch": "make watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fmixolydian/ziggurat.js.git"
+  },
+  "keywords": [
+    "library",
+    "toolkit",
+    "ziggurat",
+    "js",
+    "templates",
+    "state-management",
+    "convenince",
+    "javascript",
+    "html",
+    "dom",
+    "element",
+    "browser",
+    "state"
+  ],
+  "author": "fmixolydian",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/fmixolydian/ziggurat.js/issues"
+  },
+  "homepage": "https://github.com/fmixolydian/ziggurat.js#readme"
+}
