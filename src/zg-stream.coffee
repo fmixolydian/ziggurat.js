@@ -20,6 +20,7 @@ zg.stream.text = (url, options) ->
 		if data.length > 0 then yield data
 		if result.done then return
 
+# yields all lines as raw text
 zg.stream.lines = (url, options) ->
 	buffer = ""
 	for await data from zg.stream.text url, options
@@ -32,6 +33,7 @@ zg.stream.lines = (url, options) ->
 	for line in lines
 		if line.length > 0 then yield line
 
+# yields all lines as JSON
 zg.stream.jsonl = (url, options) ->
 	for await line from zg.stream.lines url, options
 		yield try JSON.parse line
