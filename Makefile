@@ -20,6 +20,7 @@ build/zg-%.js: src/zg-%.coffee
 
 build/%.min.js: build/%.js
 	minify $< -o $@
+	echo >> $@
 
 # GENERAL RULES
 
