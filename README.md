@@ -12,7 +12,7 @@ of doing one thing, and doing it well:
 
 ## Usage
 
-Before importing Ziggurat, you must include [`Imperative HTML`](https://www.npmjs.com/package/imperative-html).
+Before importing Ziggurat, you must include [Imperative HTML](https://www.npmjs.com/package/imperative-html).
 
 You may either use the combined `ziggurat.js` file, or import the modules separately.
 
