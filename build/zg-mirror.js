@@ -2,25 +2,34 @@
 // TODO: mirror to cookie, or to local storage
 // TODO: custom setter for zg.mirror
 zg.mirror = class {
-  constructor(name, _value) {
+  constructor(name, _value, setters) {
     this.name = name;
     Object.defineProperty(this, "v", {
       get: function() {
         return this._value;
       },
       set: function(val) {
-        var bind, i, len, ref, results;
+        var bind, i, j, len, len1, ref, results, setter;
         // when V is set, also update the bound valus in HTML
         this._value = val;
         ref = zg.queryall(`zg-bind[name=${this.name}]`);
-        results = [];
+        
+        // update DOM
         for (i = 0, len = ref.length; i < len; i++) {
           bind = ref[i];
-          results.push(bind.innerText = this._value);
+          bind.innerText = this._value;
+        }
+
+        // call custom setters
+        results = [];
+        for (j = 0, len1 = setters.length; j < len1; j++) {
+          setter = setters[j];
+          results.push(setter(this._value, this.name));
         }
         return results;
       }
     });
+    
     // also call the setter
     this.v = _value;
   }
