@@ -36,4 +36,4 @@ zg.stream.lines = (url, options) ->
 # yields all lines as JSON
 zg.stream.jsonl = (url, options) ->
 	for await line from zg.stream.lines url, options
-		yield try JSON.parse line
+		try yield JSON.parse line

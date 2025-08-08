@@ -31,6 +31,7 @@ zg.stream.text = async function*(url, options) {
   }
 };
 
+// yields all lines as raw text
 zg.stream.lines = async function*(url, options) {
   var buffer, data, i, len, line, lines, ref, results;
   buffer = "";
@@ -56,16 +57,15 @@ zg.stream.lines = async function*(url, options) {
   return results;
 };
 
+// yields all lines as JSON
 zg.stream.jsonl = async function*(url, options) {
   var line, ref, results;
   ref = zg.stream.lines(url, options);
   results = [];
   for await (line of ref) {
-    results.push((yield (function() {
-      try {
-        return JSON.parse(line);
-      } catch (error) {}
-    })()));
+    try {
+      results.push((yield JSON.parse(line)));
+    } catch (error) {}
   }
   return results;
 };
