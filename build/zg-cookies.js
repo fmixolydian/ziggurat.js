@@ -37,11 +37,13 @@ zg.cookies = new Proxy({}, {
           return results;
         }
       })()).join('; ');
-      console.log(cookie);
     } else {
-      console.log("not an object");
       cookie = `${name}=${value}`;
     }
     return document.cookie = cookie;
   }
 });
+
+zg.mirror_to_cookie = function(value, name) {
+  return zg.cookies[name] = value;
+};

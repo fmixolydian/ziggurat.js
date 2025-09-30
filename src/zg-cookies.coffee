@@ -12,9 +12,10 @@ zg.cookies = new Proxy {},
 			cookie = "#{name}=#{value.value}; "
 			# add every property to cookie string
 			cookie += ((if v? then "#{k} = #{v}" else "#{k}") for k, v of value if k isnt 'value').join '; '
-			console.log cookie
 		else
-			console.log "not an object"
 			cookie = "#{name}=#{value}"
 		
 		document.cookie = cookie
+
+zg.mirror_to_cookie = (value, name) ->
+	zg.cookies[name] = value

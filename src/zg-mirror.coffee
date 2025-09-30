@@ -1,7 +1,5 @@
-# TODO: mirror to cookie, or to local storage
-
 zg.mirror = class
-	constructor: (@name, _value, setters) ->
+	constructor: (@name, _value, setters, options) ->
 		Object.defineProperty @, "v",
 			get: -> @_value
 			set: (val) ->
@@ -14,7 +12,10 @@ zg.mirror = class
 				
 				# call custom setters
 				for setter in setters
-					setter @_value, @name
+					setter @_value, @name, options
 		
 		# also call the setter
 		@v = _value
+
+zg.mirror_to_localstorage = (value, name, options) ->
+	localStorage[name] = {"value": value, options...}
