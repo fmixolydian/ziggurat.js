@@ -18,4 +18,4 @@ zg.mirror = class
 		@v = _value
 
 zg.mirror_to_localstorage = (value, name, options) ->
-	localStorage[name] = {"value": value, options...}
+	localStorage[name] = value

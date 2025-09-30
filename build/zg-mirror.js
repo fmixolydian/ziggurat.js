@@ -35,8 +35,5 @@ zg.mirror = class {
 };
 
 zg.mirror_to_localstorage = function(value, name, options) {
-  return localStorage[name] = {
-    "value": value,
-    ...options
-  };
+  return localStorage[name] = value;
 };
