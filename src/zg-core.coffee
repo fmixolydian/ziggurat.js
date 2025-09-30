@@ -27,3 +27,8 @@ zg.deepfind = (data, path) ->
 		if not data?
 			throw new Error "'#{path}' not in data '#{data}'"
 	data
+
+zg._INIT_LIST = []
+
+zg.init = ->
+	f for f in zg._INIT_LIST

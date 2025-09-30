@@ -55,3 +55,16 @@ zg.deepfind = function(data, path) {
   }
   return data;
 };
+
+zg._INIT_LIST = [];
+
+zg.init = function() {
+  var f, i, len, ref, results;
+  ref = zg._INIT_LIST;
+  results = [];
+  for (i = 0, len = ref.length; i < len; i++) {
+    f = ref[i];
+    results.push(f);
+  }
+  return results;
+};
