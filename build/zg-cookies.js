@@ -44,6 +44,17 @@ zg.cookies = new Proxy({}, {
   }
 });
 
+zg.load_json_cookie = function(name) {
+  var SyntaxError, val;
+  val = zg.cookies[name];
+  try {
+    return JSON.parse(val);
+  } catch (error) {
+    SyntaxError = error;
+    return null;
+  }
+};
+
 zg.mirror_to_cookie = function(value, name, options) {
   return zg.cookies[name] = {
     "value": JSON.stringify(value),

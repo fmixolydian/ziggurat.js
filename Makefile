@@ -31,5 +31,7 @@ run: ziggurat
 	cp -vr test/* build/
 	python3 -m http.server -d build
 
+everything: ziggurat ziggurat-min
+
 watch:
 	./tools/watch

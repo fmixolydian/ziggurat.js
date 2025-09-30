@@ -17,5 +17,11 @@ zg.cookies = new Proxy {},
 		
 		document.cookie = cookie
 
+zg.load_json_cookie = (name) ->
+	val = zg.cookies[name]
+	try JSON.parse(val)
+	catch SyntaxError
+		null
+
 zg.mirror_to_cookie = (value, name, options) ->
 	zg.cookies[name] = {"value": JSON.stringify(value), options...}
