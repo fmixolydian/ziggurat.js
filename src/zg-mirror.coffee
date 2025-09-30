@@ -1,5 +1,4 @@
 # TODO: mirror to cookie, or to local storage
-# TODO: custom setter for zg.mirror
 
 zg.mirror = class
 	constructor: (@name, _value, setters) ->

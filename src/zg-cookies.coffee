@@ -1,0 +1,20 @@
+zg.cookies = new Proxy {},
+	get: (_, name) ->
+		# extract cookie from document.cookie
+		cookies = (cookie.split '=' for cookie in document.cookie.split '; ')
+		for cookie in cookies
+			if cookie[0] == name
+				return cookie[1]
+	set: (_, name, value) ->
+		# build a statement to be put into document.cookie
+		
+		if typeof value == 'object'
+			cookie = "#{name}=#{value.value}; "
+			# add every property to cookie string
+			cookie += ((if v? then "#{k} = #{v}" else "#{k}") for k, v of value if k isnt 'value').join '; '
+			console.log cookie
+		else
+			console.log "not an object"
+			cookie = "#{name}=#{value}"
+		
+		document.cookie = cookie

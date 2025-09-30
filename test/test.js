@@ -1,5 +1,5 @@
-let counter = new zg.mirror("counter", -20, [
-	n => console.log("New counter value is", n)
+let counter = new zg.mirror("counter", 20, [
+	(value, name) => console.log(`value for '${name}' is '${value}'`)
 ])
 
 let todos = []
