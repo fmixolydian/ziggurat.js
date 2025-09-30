@@ -1,4 +1,4 @@
-TARGETS      := zg-core zg-forms zg-mirror zg-cookies zg-templates zg-stream
+TARGETS      := zg-core zg-time zg-forms zg-mirror zg-cookies zg-templates
 TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
    MIN_FILES := $(foreach target, $(TARGETS), build/$(target).min.js)
 
