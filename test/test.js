@@ -23,3 +23,5 @@ async function startStreaming() {
 		stream.appendChild(zg.create("person", data))
 	}
 }
+
+zg.init
