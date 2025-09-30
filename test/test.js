@@ -24,4 +24,4 @@ async function startStreaming() {
 	}
 }
 
-zg.init
+zg.init();
