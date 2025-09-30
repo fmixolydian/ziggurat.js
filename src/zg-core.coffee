@@ -31,4 +31,4 @@ zg.deepfind = (data, path) ->
 zg._INIT_LIST = []
 
 zg.init = ->
-	f for f in zg._INIT_LIST
+	f() for f in zg._INIT_LIST

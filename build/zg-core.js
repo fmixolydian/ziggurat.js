@@ -64,7 +64,7 @@ zg.init = function() {
   results = [];
   for (i = 0, len = ref.length; i < len; i++) {
     f = ref[i];
-    results.push(f);
+    results.push(f());
   }
   return results;
 };
