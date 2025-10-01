@@ -5,24 +5,19 @@ TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
 # DIST FILES
 
 ziggurat: build/ziggurat.js
-ziggurat-min: build/ziggurat.min.js
 
-build/ziggurat.js:
-	macc src/ziggurat.coffee -I src/ | coffee -scp > build/ziggurat.js
-
-build/ziggurat.min.js: build/ziggurat.js
-	minify build/ziggurat.js > build/ziggurat.min.js
+build/ziggurat.js: build/VERSION src/*.coffee	
+	macc src/ziggurat.coffee -I src/ | coffee -scpb > $@
 
 # MODULES
 
-build/zg-%.js: src/zg-%.coffee
+build/zg-%.js: build/VERSION src/zg-%.coffee
 	coffee -bcp $< > $@
 
-build/%.min.js: build/%.js
-	minify $< -o $@
-	echo >> $@
-
 # GENERAL RULES
+
+build/VERSION: package.json
+	echo "zg.VERSION = `jq .version package.json`" > build/VERSION
 
 clean:
 	rm -rf build/* dist/*
@@ -31,7 +26,7 @@ run: ziggurat
 	cp -vr test/* build/
 	python3 -m http.server -d build
 
-everything: ziggurat ziggurat-min $(TARGET_FILES) $(MIN_FILES)
+everything: $(TARGET_FILES) ziggurat
 
 watch:
 	./tools/watch

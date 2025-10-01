@@ -28,7 +28,10 @@ zg.deepfind = (data, path) ->
 			throw new Error "'#{path}' not in data '#{data}'"
 	data
 
+# ${include ../build/VERSION}
+
 zg._INIT_LIST = []
 
 zg.init = ->
 	f() for f in zg._INIT_LIST
+	console.log "%cZiggurat #{zg.VERSION} initialized.", "color: orange; font-weight: bold"
