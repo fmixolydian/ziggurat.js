@@ -1,14 +1,14 @@
-Number.prototype.nanos   = -> this.micros() / 1000
-Number.prototype.micros  = -> this.millis() / 1000
-Number.prototype.millis  = -> this.seconds() / 1000
-Number.prototype.seconds = -> this
-Number.prototype.minutes = -> this.seconds() * 60
-Number.prototype.hours   = -> this.minutes() * 60
-Number.prototype.days    = -> this.hours()   * 24
-Number.prototype.months  = -> this.days()    * 30.43684914
-Number.prototype.years   = -> this.months()  * 12
-Number.prototype.ago     = -> new Date(Date.now() - this*1000)
-Number.prototype.fromnow = -> new Date(Date.now() + this*1000)
+Number::nanos   = -> this.micros() / 1000
+Number::micros  = -> this.millis() / 1000
+Number::millis  = -> this.seconds() / 1000
+Number::seconds = -> this
+Number::minutes = -> this.seconds() * 60
+Number::hours   = -> this.minutes() * 60
+Number::days    = -> this.hours()   * 24
+Number::months  = -> this.days()    * 30.43684914
+Number::years   = -> this.months()  * 12
+Number::ago     = -> new Date(Date.now() - this*1000)
+Number::fromnow = -> new Date(Date.now() + this*1000)
 
 create_math_function = (name) ->
 	-> this Math[name]

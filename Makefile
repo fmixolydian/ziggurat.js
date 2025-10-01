@@ -12,7 +12,7 @@ build/ziggurat.js: build/VERSION src/*.coffee
 # MODULES
 
 build/zg-%.js: build/VERSION src/zg-%.coffee
-	coffee -bcp $< > $@
+	coffee -bcp $(word 2, $^) > $@
 
 # GENERAL RULES
 

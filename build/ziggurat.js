@@ -122,29 +122,35 @@ zg.mirror = class {
         return this._value;
       },
       set: function(val) {
-        var bind, i, j, len, len1, ref, results, setter;
         // when V is set, also update the bound valus in HTML
         this._value = val;
-        ref = zg.queryall(`zg-bind[name=${this.name}]`);
-        
-        // update DOM
-        for (i = 0, len = ref.length; i < len; i++) {
-          bind = ref[i];
-          bind.innerText = this._value;
-        }
-
-        // call custom setters
-        results = [];
-        for (j = 0, len1 = setters.length; j < len1; j++) {
-          setter = setters[j];
-          results.push(setter(this._value, this.name, options));
-        }
-        return results;
+        return this.update();
       }
     });
     
     // also call the setter
+    this.setters = setters;
+    this.options = options;
     this.v = _value;
+  }
+
+  update() {
+    var bind, i, j, len, len1, ref, ref1, results, setter;
+    ref = zg.queryall(`zg-bind[name=${this.name}]`);
+    // update DOM
+    for (i = 0, len = ref.length; i < len; i++) {
+      bind = ref[i];
+      bind.innerText = this._value;
+    }
+    ref1 = this.setters;
+    
+    // call custom setters
+    results = [];
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      setter = ref1[j];
+      results.push(setter(this._value, this.name, this.options));
+    }
+    return results;
   }
 
 };

@@ -5,17 +5,21 @@ zg.mirror = class
 			set: (val) ->
 				# when V is set, also update the bound valus in HTML
 				@_value = val
-				
-				# update DOM
-				for bind in zg.queryall "zg-bind[name=#{@name}]"
-					bind.innerText = @_value
-				
-				# call custom setters
-				for setter in setters
-					setter @_value, @name, options
+				@update()
 		
 		# also call the setter
+		@setters = setters
+		@options = options
 		@v = _value
+	
+	update: ->
+		# update DOM
+		for bind in zg.queryall "zg-bind[name=#{@name}]"
+			bind.innerText = @_value
+		
+		# call custom setters
+		for setter in @setters
+			setter @_value, @name, @options
 
 zg.mirror_to_localstorage = (value, name, options) ->
 	localStorage[name] = value
