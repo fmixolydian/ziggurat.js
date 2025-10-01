@@ -1,4 +1,4 @@
-TARGETS      := zg-core zg-time zg-forms zg-mirror zg-cookies zg-numeric
+TARGETS      := zg-core zg-forms zg-mirror zg-cookies zg-numeric zg-stream zg-templates
 TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
    MIN_FILES := $(foreach target, $(TARGETS), build/$(target).min.js)
 
@@ -7,11 +7,11 @@ TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
 ziggurat: build/ziggurat.js
 ziggurat-min: build/ziggurat.min.js
 
-build/ziggurat.js: $(TARGET_FILES)
-	cat $(TARGET_FILES) > build/ziggurat.js
+build/ziggurat.js:
+	macc src/ziggurat.coffee -I src/ | coffee -scp > build/ziggurat.js
 
-build/ziggurat.min.js: $(MIN_FILES)
-	cat $(MIN_FILES)    > build/ziggurat.min.js
+build/ziggurat.min.js: build/ziggurat.js
+	minify build/ziggurat.js > build/ziggurat.min.js
 
 # MODULES
 
@@ -31,7 +31,7 @@ run: ziggurat
 	cp -vr test/* build/
 	python3 -m http.server -d build
 
-everything: ziggurat ziggurat-min
+everything: ziggurat ziggurat-min $(TARGET_FILES) $(MIN_FILES)
 
 watch:
 	./tools/watch

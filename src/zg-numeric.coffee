@@ -13,8 +13,11 @@ Number.prototype.fromnow = -> new Date(Date.now() + this*1000)
 create_math_function = (name) ->
 	-> this Math[name]
 
-zg._INIT_LIST.push ->
-	for key in Object.getOwnPropertyNames Math
-		fun = Math[key]
-		if fun.length == 1 and typeof fun is "function"
-			eval "Number.prototype.#{key} = function() {return Math.#{key}(this)}"
+(->
+
+for key in Object.getOwnPropertyNames Math
+	fun = Math[key]
+	if fun.length == 1 and typeof fun is "function"
+		eval "Number.prototype.#{key} = function() {return Math.#{key}(this)}"
+
+)()
