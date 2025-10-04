@@ -9,7 +9,7 @@ zg.mirror = class {
       set: function(val) {
         // when V is set, also update the bound valus in HTML
         this._value = val;
-        return this.update;
+        return this.update();
       }
     });
     
@@ -19,8 +19,50 @@ zg.mirror = class {
     this.v = _value;
   }
 
+  update() {
+    var i, len, ref, results, setter;
+    ref = this.setters;
+    // call custom setters
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      setter = ref[i];
+      results.push(setter(this._value, this.name, this.options));
+    }
+    return results;
+  }
+
 };
 
-zg.mirror_to_localstorage = function(value, name, options) {
+zg.mirror_to_document = function(value, name) {
+  var bind, i, j, len, len1, ref, ref1, results, script, show, toggle;
+  ref = zg.queryall(`zg-bind[name=${name}]`);
+  // update BINDs
+  for (i = 0, len = ref.length; i < len; i++) {
+    bind = ref[i];
+    bind.innerText = value;
+  }
+  ref1 = zg.queryall(`zg-when[name=${name}]`);
+  
+  // update WHENs 
+  results = [];
+  for (j = 0, len1 = ref1.length; j < len1; j++) {
+    toggle = ref1[j];
+    show = false;
+    script = toggle.getAttribute('script');
+    if (script != null) {
+      show = (function() {
+        return eval(script);
+      }).call(value);
+    }
+    results.push(toggle.hidden = !show);
+  }
+  return results;
+};
+
+zg.mirror_to_localstorage = function(value, name) {
   return localStorage[name] = value;
+};
+
+zg.mirror_to_console = function(value, name) {
+  return console.debug(`ziggurat: mirror ${name} = '${value}'`);
 };

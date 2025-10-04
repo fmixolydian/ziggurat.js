@@ -1,0 +1,67 @@
+#!/usr/bin/python3
+
+import sys
+import argparse
+import re
+import os.path as path
+import shlex
+
+class MaccSyntaxError(Exception):
+	def __init__(self, message, line = None):
+		self.reason  = message
+		self.line    = line
+		if line:
+			super().__init__(f"Error in line {line}: {message}")
+		else:
+			super().__init__(f"Error: {message}")
+
+class MaccParser():
+	include = []
+
+	def command_include(self, filename):
+		for include_path in self.include:
+			try:
+				with open(path.join(include_path, filename)) as fp:
+					return fp.read()
+
+			except FileNotFoundError:
+				raise MaccSyntaxError(f"Cannot include {filename}")
+	
+	def command_times(self, lineno, block, times):
+		return ""
+
+	commands = {
+		'include': {'block': False, 'fn': command_include},
+		'times':   {'block': True,  'fn': command_times},
+	}
+
+	def process(self, data):
+		out = ""
+		for lineno, line in enumerate(data.split('\n')):
+			if (match := re.search(r"(#|//|--)\s*\${(.*)}", line)):
+				tokens  = shlex.split(match.groups()[1])
+				command = self.commands[tokens[0]]
+				if command['block']:
+					# TODO
+					raise MaccSyntaxError('Block commands are not supported yet')
+				else:
+					out += self.process(command['fn'](self, *tokens[1:])) + "\n"
+				
+			else:
+				out += line + "\n"
+		return out
+
+parser = argparse.ArgumentParser()
+parser.add_argument('filename')
+parser.add_argument('-o', '--output',  default = '/dev/stdout')
+parser.add_argument('-I', '--include', action = 'append', default = [])
+args = parser.parse_args()
+
+with open(args.filename, 'r') as fp_input:
+	data = fp_input.read()
+
+	macc = MaccParser()
+	macc.include = args.include + [path.dirname(args.filename)]
+
+	with open(args.output, 'w') as fp_output:
+		fp_output.write(macc.process(data))

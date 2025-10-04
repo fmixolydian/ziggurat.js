@@ -13,13 +13,26 @@ zg.mirror = class
 		@v = _value
 	
 	update: ->
-		# update DOM
-		for bind in zg.queryall "zg-bind[name=#{@name}]"
-			bind.innerText = @_value
-		
 		# call custom setters
 		for setter in @setters
 			setter @_value, @name, @options
 
-zg.mirror_to_localstorage = (value, name, options) ->
+zg.mirror_to_document = (value, name) ->
+	# update BINDs
+	for bind in zg.queryall "zg-bind[name=#{name}]"
+		bind.innerText = value
+	
+	# update WHENs 
+	for toggle in zg.queryall "zg-when[name=#{name}]"
+		show = false
+		
+		script = toggle.getAttribute 'script'
+		if script? then show = ((-> eval script).call value)
+
+		toggle.hidden = not show
+
+zg.mirror_to_localstorage = (value, name) ->
 	localStorage[name] = value
+
+zg.mirror_to_console = (value, name) ->
+	console.debug "ziggurat: mirror #{name} = '#{value}'"

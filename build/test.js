@@ -1,7 +1,8 @@
 let counter = new zg.mirror("counter", 20, [
 	zg.mirror_to_cookie,
 	zg.mirror_to_localstorage,
-	(value, name) => console.log(`value for '${name}' is '${value}'`)
+	zg.mirror_to_document,
+	zg.mirror_to_console
 ])
 
 let todos = []

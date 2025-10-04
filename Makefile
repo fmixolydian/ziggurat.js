@@ -7,7 +7,7 @@ TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
 ziggurat: build/ziggurat.js
 
 build/ziggurat.js: build/VERSION src/*.coffee	
-	macc src/ziggurat.coffee -I src/ | coffee -scpb > $@
+	tools/macc src/ziggurat.coffee -I src/ | coffee -scpb > $@
 
 # MODULES
 
