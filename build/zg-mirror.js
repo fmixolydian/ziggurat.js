@@ -14,7 +14,7 @@ zg.mirror = class {
     });
     
     // also call the setter
-    this.setters = setters;
+    this.setters = setters || [];
     this.options = options;
     this.v = _value;
   }

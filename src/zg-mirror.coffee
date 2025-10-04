@@ -8,7 +8,7 @@ zg.mirror = class
 				@update()
 		
 		# also call the setter
-		@setters = setters
+		@setters = setters or []
 		@options = options
 		@v = _value
 	

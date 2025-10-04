@@ -56,7 +56,7 @@ zg.deepfind = function(data, path) {
   return data;
 };
 
-zg.VERSION = "0.6.0";
+zg.VERSION = "0.6.1";
 
 zg._INIT_LIST = [];
 
@@ -129,7 +129,7 @@ zg.mirror = class {
     });
     
     // also call the setter
-    this.setters = setters;
+    this.setters = setters || [];
     this.options = options;
     this.v = _value;
   }
