@@ -56,7 +56,7 @@ zg.deepfind = function(data, path) {
   return data;
 };
 
-zg.VERSION = "0.6.1";
+zg.VERSION = "0.6.2";
 
 zg._INIT_LIST = [];
 
@@ -383,23 +383,44 @@ zg.create = function(name, data) {
     throw new TypeError('no such template with name ' + name);
   }
   build = function(div, data) {
-    var child, elements, j, len1, new_elements, ref1;
+    var attr_key, element, elements, j, l, len1, len2, new_elements, ref1, ref2, replace_vars;
     elements = div.cloneNode(true);
     new_elements = [];
     ref1 = elements.childNodes;
     // compile every child
     for (j = 0, len1 = ref1.length; j < len1; j++) {
-      child = ref1[j];
-      // depending on tag, replace with something
-      switch (child.nodeName.toLowerCase()) {
+      element = ref1[j];
+      replace_vars = function(text) {
+        return text.replace(/\\?\$\{(.+?)\}/g, function(match, path) {
+          if (match.startsWith('\\')) {
+            return match;
+          } else {
+            return zg.deepfind(data, path);
+          }
+        });
+      };
+      
+          // depending on tag, replace with something
+      // FIXME: DEPRECATED
+      switch (element.nodeName.toLowerCase()) {
         case "zg-var":
-          child = document.createTextNode(zg.deepfind(data, child.innerHTML));
+          element = document.createTextNode(zg.deepfind(data, element.innerHTML));
+      }
+      if (element.nodeName === '#text') {
+        element.data = replace_vars(element.data);
+      } else {
+        ref2 = element.attributes;
+        for (l = 0, len2 = ref2.length; l < len2; l++) {
+          attr_key = ref2[l];
+          element.attributes[attr_key] = replace_vars(element.attributes[attr_key]);
+        }
+        element.innerText = replace_vars(element.innerText);
       }
       // if the child has more children, build the child
-      if (child.children != null) {
-        child.replaceChildren(...(build(child, data)));
+      if (element.children != null) {
+        element.replaceChildren(...(build(element, data)));
       }
-      new_elements.push(child);
+      new_elements.push(element);
     }
     return new_elements;
   };
