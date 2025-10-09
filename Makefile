@@ -4,10 +4,13 @@ TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
 
 # DIST FILES
 
-ziggurat: build/ziggurat.js
+ziggurat: build/ziggurat.js build/ziggurat.min.js
 
 build/ziggurat.js: build/VERSION src/*.coffee	
 	tools/macc src/ziggurat.coffee -I src/ | coffee -scpb > $@
+
+build/%.min.js: build/%.js
+	minify $< > $@
 
 # MODULES
 
@@ -26,7 +29,7 @@ run: ziggurat
 	cp -vr test/* build/
 	python3 -m http.server -d build
 
-everything: $(TARGET_FILES) ziggurat
+everything: ziggurat
 
 watch:
 	./tools/watch

@@ -56,7 +56,7 @@ zg.deepfind = function(data, path) {
   return data;
 };
 
-zg.VERSION = "0.6.2";
+zg.VERSION = "0.6.3";
 
 zg._INIT_LIST = [];
 
