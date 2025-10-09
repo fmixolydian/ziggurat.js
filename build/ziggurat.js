@@ -154,7 +154,10 @@ zg.mirror_to_document = function(value, name) {
   // update BINDs
   for (i = 0, len = ref.length; i < len; i++) {
     bind = ref[i];
-    bind.innerText = value;
+    script = bind.getAttribute('script');
+    bind.innerText = script != null ? (function() {
+      return eval(script);
+    }).call(value) : value;
   }
   ref1 = zg.queryall(`zg-when[name=${name}]`);
   

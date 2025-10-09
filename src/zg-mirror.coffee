@@ -20,7 +20,9 @@ zg.mirror = class
 zg.mirror_to_document = (value, name) ->
 	# update BINDs
 	for bind in zg.queryall "zg-bind[name=#{name}]"
-		bind.innerText = value
+		
+		script = bind.getAttribute 'script'
+		bind.innerText = if script? then ((-> eval script).call value) else value
 	
 	# update WHENs 
 	for toggle in zg.queryall "zg-when[name=#{name}]"

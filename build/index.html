@@ -29,8 +29,9 @@
 			<input type="submit">
 		</form>
 
-	<h1>Exhibit B: Counter (using <code>zg-mirror</code>)</h1>
-	<p id="counter">'<zg-bind name="counter"></zg-bind>'</p>
+	<h1>Exhibit B: Counter + Customized BIND (using <code>zg-mirror</code>)</h1>
+	<p id="counter"><zg-bind script="this" name="counter"></zg-bind>, 
+	                <zg-bind script="this % 2 ? 'Odd' : 'Even'" name="counter"></zg-bind></p>
 	<button onclick="counter.v++">+</button>
 	<button onclick="counter.v--">-</button>
 

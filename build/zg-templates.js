@@ -7,23 +7,44 @@ zg.create = function(name, data) {
     throw new TypeError('no such template with name ' + name);
   }
   build = function(div, data) {
-    var child, elements, i, len, new_elements, ref;
+    var attr_key, element, elements, i, j, len, len1, new_elements, ref, ref1, replace_vars;
     elements = div.cloneNode(true);
     new_elements = [];
     ref = elements.childNodes;
     // compile every child
     for (i = 0, len = ref.length; i < len; i++) {
-      child = ref[i];
-      // depending on tag, replace with something
-      switch (child.nodeName.toLowerCase()) {
+      element = ref[i];
+      replace_vars = function(text) {
+        return text.replace(/\\?\$\{(.+?)\}/g, function(match, path) {
+          if (match.startsWith('\\')) {
+            return match;
+          } else {
+            return zg.deepfind(data, path);
+          }
+        });
+      };
+      
+          // depending on tag, replace with something
+      // FIXME: DEPRECATED
+      switch (element.nodeName.toLowerCase()) {
         case "zg-var":
-          child = document.createTextNode(zg.deepfind(data, child.innerHTML));
+          element = document.createTextNode(zg.deepfind(data, element.innerHTML));
+      }
+      if (element.nodeName === '#text') {
+        element.data = replace_vars(element.data);
+      } else {
+        ref1 = element.attributes;
+        for (j = 0, len1 = ref1.length; j < len1; j++) {
+          attr_key = ref1[j];
+          element.attributes[attr_key] = replace_vars(element.attributes[attr_key]);
+        }
+        element.innerText = replace_vars(element.innerText);
       }
       // if the child has more children, build the child
-      if (child.children != null) {
-        child.replaceChildren(...(build(child, data)));
+      if (element.children != null) {
+        element.replaceChildren(...(build(element, data)));
       }
-      new_elements.push(child);
+      new_elements.push(element);
     }
     return new_elements;
   };
