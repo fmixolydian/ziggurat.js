@@ -28,6 +28,9 @@ zg.deepfind = (data, path) ->
 			throw new Error "'#{path}' not in data '#{data}'"
 	data
 
+zg.evalwith = (script, value) ->
+	(-> eval script).call value
+
 # ${include ../build/VERSION}
 
 zg._INIT_LIST = []

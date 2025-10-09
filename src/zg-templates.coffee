@@ -14,8 +14,8 @@ zg.create = (name, data) ->
 		for element in elements.childNodes
 
 			replace_vars = (text) ->
-				text.replace /\\?\$\{(.+?)\}/g, (match, path) ->
-					if match.startsWith '\\' then match else (zg.deepfind data, path) 
+				text.replace /\\?\$\{(.+?)\}/g, (match, script) ->
+					if match.startsWith '\\' then match else zg.evalwith script, data
 			
 			# depending on tag, replace with something
 			# FIXME: DEPRECATED
@@ -25,9 +25,11 @@ zg.create = (name, data) ->
 
 			if element.nodeName is '#text'
 				element.data = replace_vars element.data
+
 			else
-				for attr_key in element.attributes
-					element.attributes[attr_key] = replace_vars element.attributes[attr_key]
+				for i in [0 ... element.attributes.length]
+					element.attributes[i] = replace_vars element.attributes[i].value 
+
 				element.innerText = replace_vars element.innerText
 
 			# if the child has more children, build the child

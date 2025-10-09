@@ -22,14 +22,14 @@ zg.mirror_to_document = (value, name) ->
 	for bind in zg.queryall "zg-bind[name=#{name}]"
 		
 		script = bind.getAttribute 'script'
-		bind.innerText = if script? then ((-> eval script).call value) else value
+		bind.innerText = if script? then zg.evalwith script, value else value
 	
 	# update WHENs 
 	for toggle in zg.queryall "zg-when[name=#{name}]"
 		show = false
 		
 		script = toggle.getAttribute 'script'
-		if script? then show = ((-> eval script).call value)
+		if script? then show = zg.evalwith script, value
 
 		toggle.hidden = not show
 
