@@ -1,5 +1,7 @@
 # Ziggurat
 
+## warning: this is a downstream mirror of the [main repository](https://codeberg.org/fmixolydian/ziggurat.js) at Codeberg.
+
 Ziggurat is a tiny JavaScript library for creating HTML elements
 based on data provided by JavaScript.
 
