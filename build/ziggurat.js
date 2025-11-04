@@ -62,7 +62,7 @@ zg.evalwith = function(script, value) {
   }).call(value);
 };
 
-zg.VERSION = "0.7.0";
+zg.VERSION = "0.7.1";
 
 zg._INIT_LIST = [];
 
@@ -405,12 +405,11 @@ zg.create = function(name, data) {
         });
       };
       
-          // depending on tag, replace with something
+      // depending on tag, replace with something
       // FIXME: DEPRECATED
-      switch (element.nodeName.toLowerCase()) {
-        case "zg-var":
-          element = document.createTextNode(zg.deepfind(data, element.innerHTML));
-      }
+      //switch (element.nodeName.toLowerCase())
+      //	when "zg-var"
+      //		element = document.createTextNode zg.deepfind data, element.innerHTML
       if (element.nodeName === '#text') {
         element.data = replace_vars(element.data);
       } else {
@@ -428,4 +427,83 @@ zg.create = function(name, data) {
     return new_elements;
   };
   return HTML.div(build(template, data));
+};
+
+zg.multimirror = class {
+  push(data) {
+    var bind, l, len1, ref1;
+    this.v.push(data);
+    ref1 = zg.queryall(`zg-multibind[name=${this.name}]`);
+    
+    // update ZG-MULTIBINDs
+    for (l = 0, len1 = ref1.length; l < len1; l++) {
+      bind = ref1[l];
+      bind.appendChild(zg.create(this.template, data));
+    }
+    return data;
+  }
+
+  insert(element, index) {
+    var bind, l, len1, ref1;
+    this.v.splice(index, 0, element);
+    if (index === -1) {
+      this.push(element);
+    }
+    ref1 = zg.queryall(`zg-multibind[name=${this.name}]`);
+    for (l = 0, len1 = ref1.length; l < len1; l++) {
+      bind = ref1[l];
+      bind.appendBefore(bind.children[index], zg.create(this.template, element));
+    }
+    return element;
+  }
+
+  delete(index) {
+    var bind, l, len1, ref1, results;
+    // remove Nth child
+    if (index < 0) {
+      this.v.length - -index;
+    } else {
+      index;
+    }
+    if (index < this.v.length) {
+      this.v.splice(index, 1);
+      ref1 = zg.queryall(`zg-multibind[name=${this.name}]`);
+      results = [];
+      for (l = 0, len1 = ref1.length; l < len1; l++) {
+        bind = ref1[l];
+        results.push(bind.removeChild(bind.children[index]));
+      }
+      return results;
+    }
+  }
+
+  clear() {
+    var bind, l, len1, ref1, results;
+    this.v = [];
+    ref1 = zg.queryall(`zg-multibind[name=${this.name}]`);
+    results = [];
+    for (l = 0, len1 = ref1.length; l < len1; l++) {
+      bind = ref1[l];
+      results.push(bind.innerHTML = "");
+    }
+    return results;
+  }
+
+  pop() {
+    return delete -1;
+  }
+
+  constructor(name1, template1, _value) {
+    var e, l, len1;
+    this.name = name1;
+    this.template = template1;
+    this.v = [];
+    if (_value != null) {
+      for (l = 0, len1 = _value.length; l < len1; l++) {
+        e = _value[l];
+        this.push(e);
+      }
+    }
+  }
+
 };

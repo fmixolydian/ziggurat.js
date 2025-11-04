@@ -5,3 +5,4 @@
 # ${include zg-numeric.coffee}
 # ${include zg-stream.coffee}
 # ${include zg-templates.coffee}
+# ${include zg-multimirror.coffee}

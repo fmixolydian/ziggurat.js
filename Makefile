@@ -1,6 +1,6 @@
-TARGETS      := zg-core zg-forms zg-mirror zg-cookies zg-numeric zg-stream zg-templates
-TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
-   MIN_FILES := $(foreach target, $(TARGETS), build/$(target).min.js)
+# TARGETS      := zg-core zg-forms zg-mirror zg-cookies zg-numeric zg-stream zg-templates zg-multimirror
+# TARGET_FILES := $(foreach target, $(TARGETS), build/$(target).js)
+#   MIN_FILES := $(foreach target, $(TARGETS), build/$(target).min.js)
 
 # DIST FILES
 

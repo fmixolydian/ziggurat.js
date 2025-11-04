@@ -6,6 +6,7 @@ let counter = new zg.mirror("counter", 20, [
 ])
 
 let todos = []
+let ajax_results = new zg.multimirror("ajax_results", "person");
 
 function addTodo(data) {
 	todos.push(data.todo)
@@ -15,13 +16,10 @@ function addTodo(data) {
 }
 
 async function startStreaming() {
-	let stream = zg.query('#stream')
-	stream.innerText = ""
-
+	ajax_results.clear();
 	for await (let data of zg.stream.jsonl(
 			'https://h.sqrt5.eu/chunked?delay=50&type=names&split=random')) {
-		console.log(data)
-		stream.appendChild(zg.create("person", data))
+		ajax_results.push(data);
 	}
 }
 

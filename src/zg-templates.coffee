@@ -19,9 +19,9 @@ zg.create = (name, data) ->
 			
 			# depending on tag, replace with something
 			# FIXME: DEPRECATED
-			switch (element.nodeName.toLowerCase())
-				when "zg-var"
-					element = document.createTextNode zg.deepfind data, element.innerHTML
+			#switch (element.nodeName.toLowerCase())
+			#	when "zg-var"
+			#		element = document.createTextNode zg.deepfind data, element.innerHTML
 
 			if element.nodeName is '#text'
 				element.data = replace_vars element.data
@@ -35,6 +35,7 @@ zg.create = (name, data) ->
 			# if the child has more children, build the child
 			if element.children?
 				element.replaceChildren (build element, data)...
+			
 			new_elements.push element
 		new_elements
 
