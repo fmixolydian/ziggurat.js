@@ -62,7 +62,7 @@ zg.evalwith = function(script, value) {
   }).call(value);
 };
 
-zg.VERSION = "0.7.1";
+zg.VERSION = "0.8.0";
 
 zg._INIT_LIST = [];
 
@@ -405,11 +405,14 @@ zg.create = function(name, data) {
         });
       };
       
-      // depending on tag, replace with something
+          // depending on tag, replace with something
       // FIXME: DEPRECATED
-      //switch (element.nodeName.toLowerCase())
-      //	when "zg-var"
-      //		element = document.createTextNode zg.deepfind data, element.innerHTML
+      switch (element.nodeName.toLowerCase()) {
+        case "zg-if":
+          if (!(zg.evalwith(element.getAttribute("script"), data))) {
+            element = document.createTextNode("");
+          }
+      }
       if (element.nodeName === '#text') {
         element.data = replace_vars(element.data);
       } else {

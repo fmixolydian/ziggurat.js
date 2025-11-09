@@ -17,9 +17,13 @@ function addTodo(data) {
 
 async function startStreaming() {
 	ajax_results.clear();
-	for await (let data of zg.stream.jsonl(
-			'https://h.sqrt5.eu/chunked?delay=50&type=names&split=random')) {
-		ajax_results.push(data);
+	try {
+		for await (let data of zg.stream.jsonl(
+				'https://h.sqrt5.eu/chunked?delay=50&type=names&split=random')) {
+			ajax_results.push(data);
+		}
+	} catch {
+		zg.queryone('zg-multibind[name=ajax_results]').appendChild(HTML.p("Unable to connect to Halifax", {"style": "color: red; font-weight: bold"}))
 	}
 }
 

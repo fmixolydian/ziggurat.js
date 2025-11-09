@@ -7,8 +7,8 @@
 
 		<zg-template id="todo" hidden>
 			<li> [ ${this.todo} ]
-				<zg-if script="this.todo.toLowerCase() == 'rust'"><small>sucks</small></zg-if>
 			</li>
+			<zg-if script="this.todo.toLowerCase() == 'ping'">pong</zg-if>
 		</zg-template>
 
 		<zg-template id="person" hidden>
@@ -42,9 +42,9 @@
 			<zg-when name="counter" script="this % 2 == 1"><p> counter is odd  </p></zg-when>
 
 		<h1>Exhibit D: Chunked AJAX (using <code>zg-stream</code>)</h1>
-			<zg-multibind name="ajax_results" style="overflow-y: scroll; max-height: 200px">
-				
+			<zg-multibind name="ajax_results" template="person" style="overflow-y: scroll; max-height: 200px">
 			</zg-multibind>
+
 			<button onclick="startStreaming()">Make HTTP Request</button>
 
 
