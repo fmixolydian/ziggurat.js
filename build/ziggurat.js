@@ -62,7 +62,7 @@ zg.evalwith = function(script, value) {
   }).call(value);
 };
 
-zg.VERSION = "0.8.1";
+zg.VERSION = "0.8.2";
 
 zg._INIT_LIST = [];
 
@@ -78,10 +78,13 @@ zg.init = function() {
 
 zg.formdata = function(element) {
   var data;
-  data = {};
+  data = {
+    "KEYS": []
+  };
   // for each entry in the form,
   // add a reference to it in data
   (new FormData(element)).forEach(function(_, k) {
+    data.KEYS.push(k);
     return Object.defineProperty(data, k, {
       get: function() {
         return element[k].value;

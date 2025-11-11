@@ -1,10 +1,11 @@
 
 zg.formdata = (element) ->
-	data = {}
+	data = {"KEYS": []}
 
 	# for each entry in the form,
 	# add a reference to it in data
 	(new FormData element).forEach (_, k) ->
+		data.KEYS.push k
 		Object.defineProperty data, k,
 			get:     -> element[k].value
 			set: (v) -> element[k].value = v
