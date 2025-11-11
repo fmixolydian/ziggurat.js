@@ -62,7 +62,7 @@ zg.evalwith = function(script, value) {
   }).call(value);
 };
 
-zg.VERSION = "0.8.0";
+zg.VERSION = "0.8.1";
 
 zg._INIT_LIST = [];
 
@@ -406,7 +406,6 @@ zg.create = function(name, data) {
       };
       
           // depending on tag, replace with something
-      // FIXME: DEPRECATED
       switch (element.nodeName.toLowerCase()) {
         case "zg-if":
           if (!(zg.evalwith(element.getAttribute("script"), data))) {
@@ -419,8 +418,8 @@ zg.create = function(name, data) {
         for (i = m = 0, ref2 = element.attributes.length; (0 <= ref2 ? m < ref2 : m > ref2); i = 0 <= ref2 ? ++m : --m) {
           element.attributes[i] = replace_vars(element.attributes[i].value);
         }
-        element.innerText = replace_vars(element.innerText);
       }
+      
       // if the child has more children, build the child
       if (element.children != null) {
         element.replaceChildren(...(build(element, data)));

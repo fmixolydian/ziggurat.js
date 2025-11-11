@@ -12,13 +12,11 @@ zg.create = (name, data) ->
 
 		# compile every child
 		for element in elements.childNodes
-
 			replace_vars = (text) ->
 				text.replace /\\?\$\{(.+?)\}/g, (match, script) ->
 					if match.startsWith '\\' then match else zg.evalwith script, data
 			
 			# depending on tag, replace with something
-			# FIXME: DEPRECATED
 			switch (element.nodeName.toLowerCase())
 				when "zg-if"
 					if not (zg.evalwith (element.getAttribute "script"), data)
@@ -30,8 +28,6 @@ zg.create = (name, data) ->
 			else
 				for i in [0 ... element.attributes.length]
 					element.attributes[i] = replace_vars element.attributes[i].value 
-
-				element.innerText = replace_vars element.innerText
 
 			# if the child has more children, build the child
 			if element.children?

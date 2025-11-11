@@ -7,8 +7,8 @@
 
 		<zg-template id="todo" hidden>
 			<li> [ ${this.todo} ]
+				<zg-if script="this.todo.toLowerCase() == 'ping'">pong</zg-if>
 			</li>
-			<zg-if script="this.todo.toLowerCase() == 'ping'">pong</zg-if>
 		</zg-template>
 
 		<zg-template id="person" hidden>
