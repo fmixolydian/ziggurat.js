@@ -31,6 +31,14 @@ zg.deepfind = (data, path) ->
 zg.evalwith = (script, value) ->
 	(-> eval script).call value
 
+
+Object::minus = (keys...) ->
+	Object.fromEntries [[k, this[k]] for k in this].filter (e) ->
+		e not in keys
+
+Object::plus = (other) ->
+	Object.assign {}, this, other
+
 # ${include ../build/VERSION}
 
 zg._INIT_LIST = []
