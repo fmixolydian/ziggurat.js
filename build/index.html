@@ -47,7 +47,11 @@
 
 			<button onclick="startStreaming()">Make HTTP Request</button>
 
-
+		<h1>Exhibit E: Fahrenheit/Celsius converter (using <code>zg-bind-to attribute</code>)</h1>
+			<input type="text" placeholder="celsius"    oninput="fahrenheit.v = (celsius.v / (5/9)) + 32"    zg-bind-to="celsius">
+			<input type="text" placeholder="fahrenheit" oninput="celsius.v    = (fahrenheit.v - 32) * (5/9)" zg-bind-to="fahrenheit">
+			
+		
 		<script src="/test.js" defer></script>
 	</body>
 </html>

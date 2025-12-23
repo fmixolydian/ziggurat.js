@@ -85,6 +85,10 @@ Object.prototype.minus = function(...keys) {
   }));
 };
 
+Object.prototype.plus = function(other) {
+  return Object.assign({}, this, other);
+};
+
 zg.VERSION = "0.8.2";
 
 zg._INIT_LIST = [];
@@ -160,15 +164,15 @@ zg._INIT_LIST.push(function() {
 });
 
 zg.mirror = class {
-  constructor(name1, _value, setters, options) {
+  constructor(name1, value, setters, options) {
     this.name = name1;
     Object.defineProperty(this, "v", {
       get: function() {
-        return this._value;
+        return this._value_;
       },
       set: function(val) {
-        // when V is set, also update the bound valus in HTML
-        this._value = val;
+        // when V is set, also update the bound value in HTML
+        this._value_ = val;
         return this.update();
       }
     });
@@ -176,7 +180,9 @@ zg.mirror = class {
     // also call the setter
     this.setters = setters || [];
     this.options = options;
-    this.v = _value;
+    if (value != null) {
+      this.v = value;
+    }
   }
 
   update() {
@@ -186,7 +192,7 @@ zg.mirror = class {
     results = [];
     for (j = 0, len = ref.length; j < len; j++) {
       setter = ref[j];
-      results.push(setter(this._value, this.name, this.options));
+      results.push(setter(this._value_, this.name, this.options));
     }
     return results;
   }
@@ -194,13 +200,18 @@ zg.mirror = class {
 };
 
 zg.mirror_to_document = function(value, name) {
-  var bind, j, l, len, len1, ref, ref1, results, script, show, toggle;
-  ref = zg.queryall(`zg-bind[name=${name}]`);
+  var bind, j, l, len, len1, ref, ref1, result, results, script, show, toggle;
+  ref = zg.queryall(`*[zg-bind-to=${name}]`);
   // update BINDs
   for (j = 0, len = ref.length; j < len; j++) {
     bind = ref[j];
-    script = bind.getAttribute('script');
-    bind.innerText = script != null ? zg.evalwith(script, value) : value;
+    script = bind.getAttribute("script");
+    result = script != null ? zg.evalwith(script, value) : value;
+    if (bind.nodeName === "INPUT") {
+      bind.value = result;
+    } else {
+      bind.innerText = result;
+    }
   }
   ref1 = zg.queryall(`zg-when[name=${name}]`);
   
@@ -223,7 +234,7 @@ zg.mirror_to_localstorage = function(value, name) {
 };
 
 zg.mirror_to_console = function(value, name) {
-  return console.debug(`ziggurat: mirror ${name} = '${value}'`);
+  return console.debug(`ziggurat: mirror ${name} = ${value}`);
 };
 
 zg.cookies = new Proxy({}, {

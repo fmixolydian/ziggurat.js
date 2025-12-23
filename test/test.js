@@ -5,6 +5,9 @@ let counter = new zg.mirror("counter", 20, [
 	zg.mirror_to_console
 ])
 
+let celsius    = new zg.mirror("celsius",    null, [zg.mirror_to_console, zg.mirror_to_document])
+let fahrenheit = new zg.mirror("fahrenheit", null, [zg.mirror_to_console, zg.mirror_to_document])
+
 let todos = []
 let ajax_results = new zg.multimirror("ajax_results", "person");
 
