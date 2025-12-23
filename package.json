@@ -1,6 +1,6 @@
 {
   "name": "ziggurat.js",
-  "version": "0.8.3",
+  "version": "0.9",
   "description": "a tiny modular js library for templates and other shorthands",
   "main": "build/ziggurat.min.js",
   "scripts": {
