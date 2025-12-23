@@ -32,12 +32,12 @@ zg.evalwith = (script, value) ->
 	(-> eval script).call value
 
 
-Object::minus = (keys...) ->
-	Object.fromEntries [[k, this[k]] for k in this].filter (e) ->
+zg.minus = (object, keys...) ->
+	Object.fromEntries [[k, object[k]] for k in object].filter (e) ->
 		e not in keys
 
-Object::plus = (other) ->
-	Object.assign {}, this, other
+zg.plus = (object, other) ->
+	Object.assign {}, object, other
 
 # ${include ../build/VERSION}
 
