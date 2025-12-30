@@ -1,5 +1,10 @@
 zg.mirror = class
 	constructor: (@name, value, setters, options) ->
+		if zg.MIRROR_INDEX[@name]?
+			throw "can't create mirror #{@name}; it already exists"
+		
+		console.log "making mirror #{@name}"
+		zg.MIRROR_INDEX[@name] = this
 		Object.defineProperty @, "v",
 			get: -> @_value_
 			set: (val) ->
@@ -19,8 +24,8 @@ zg.mirror = class
 
 zg.mirror_to_document = (value, name) ->
 	# update BINDs
-	for bind in zg.queryall "*[zg-bind-to=#{name}]"
-		script = bind.getAttribute "script"
+	for bind in zg.queryall "*[zg-bind-to=#{name}], *[zg-sync-with=#{name}]"
+		script = bind.getAttribute "zg-script"
 		result = if script? then zg.evalwith script, value else value
 		if bind.nodeName is "INPUT"
 			bind.value = result
@@ -31,7 +36,7 @@ zg.mirror_to_document = (value, name) ->
 	for toggle in zg.queryall "zg-when[name=#{name}]"
 		show = false
 		
-		script = toggle.getAttribute 'script'
+		script = toggle.getAttribute 'zg-script'
 		if script? then show = zg.evalwith script, value
 
 		toggle.hidden = not show
@@ -41,3 +46,15 @@ zg.mirror_to_localstorage = (value, name) ->
 
 zg.mirror_to_console = (value, name) ->
 	console.debug "ziggurat: mirror #{name} = #{value}"
+
+zg.MIRROR_INDEX = {}
+zg._INIT_LIST.push ->
+	handle_syncs = ->
+		mirror_name = this.getAttribute 'zg-sync-with'
+		mirror = zg.MIRROR_INDEX[mirror_name]
+		throw "mirror #{mirror_name} doesn't exist!" unless mirror?
+		mirror.v = this.value # trigger setters (hopefully dont cause an endlessly recursive loop of event handlers)
+	
+	for element in zg.queryall "*[zg-sync-with]"
+		element.addEventListener "oninput",  handle_syncs
+		element.addEventListener "onchange", handle_syncs

@@ -89,7 +89,7 @@ Object.prototype.plus = function(other) {
   return Object.assign({}, this, other);
 };
 
-zg.VERSION = "0.8.2";
+zg.VERSION = "0.9";
 
 zg._INIT_LIST = [];
 
@@ -166,6 +166,11 @@ zg._INIT_LIST.push(function() {
 zg.mirror = class {
   constructor(name1, value, setters, options) {
     this.name = name1;
+    if (zg.MIRROR_INDEX[this.name] != null) {
+      throw `can't create mirror ${this.name}; it already exists`;
+    }
+    console.log(`making mirror ${this.name}`);
+    zg.MIRROR_INDEX[this.name] = this;
     Object.defineProperty(this, "v", {
       get: function() {
         return this._value_;
@@ -201,11 +206,11 @@ zg.mirror = class {
 
 zg.mirror_to_document = function(value, name) {
   var bind, j, l, len, len1, ref, ref1, result, results, script, show, toggle;
-  ref = zg.queryall(`*[zg-bind-to=${name}]`);
+  ref = zg.queryall(`*[zg-bind-to=${name}], *[zg-sync-with=${name}]`);
   // update BINDs
   for (j = 0, len = ref.length; j < len; j++) {
     bind = ref[j];
-    script = bind.getAttribute("script");
+    script = bind.getAttribute("zg-script");
     result = script != null ? zg.evalwith(script, value) : value;
     if (bind.nodeName === "INPUT") {
       bind.value = result;
@@ -220,7 +225,7 @@ zg.mirror_to_document = function(value, name) {
   for (l = 0, len1 = ref1.length; l < len1; l++) {
     toggle = ref1[l];
     show = false;
-    script = toggle.getAttribute('script');
+    script = toggle.getAttribute('zg-script');
     if (script != null) {
       show = zg.evalwith(script, value);
     }
@@ -236,6 +241,29 @@ zg.mirror_to_localstorage = function(value, name) {
 zg.mirror_to_console = function(value, name) {
   return console.debug(`ziggurat: mirror ${name} = ${value}`);
 };
+
+zg.MIRROR_INDEX = {};
+
+zg._INIT_LIST.push(function() {
+  var element, handle_syncs, j, len, ref, results;
+  handle_syncs = function() {
+    var mirror, mirror_name;
+    mirror_name = this.getAttribute('zg-sync-with');
+    mirror = zg.MIRROR_INDEX[mirror_name];
+    if (mirror == null) {
+      throw `mirror ${mirror_name} doesn't exist!`;
+    }
+    return mirror.v = this.value; // trigger setters (hopefully dont cause an endlessly recursive loop of event handlers)
+  };
+  ref = zg.queryall("*[zg-sync-with]");
+  results = [];
+  for (j = 0, len = ref.length; j < len; j++) {
+    element = ref[j];
+    element.addEventListener("oninput", handle_syncs);
+    results.push(element.addEventListener("onchange", handle_syncs));
+  }
+  return results;
+});
 
 zg.cookies = new Proxy({}, {
   get: function(_, name) {
@@ -458,7 +486,7 @@ zg.create = function(name, data) {
           // depending on tag, replace with something
       switch (element.nodeName.toLowerCase()) {
         case "zg-if":
-          if (!(zg.evalwith(element.getAttribute("script"), data))) {
+          if (!(zg.evalwith(element.getAttribute("zg-script"), data))) {
             element = document.createTextNode("");
           }
       }

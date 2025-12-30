@@ -19,7 +19,7 @@ zg.create = (name, data) ->
 			# depending on tag, replace with something
 			switch (element.nodeName.toLowerCase())
 				when "zg-if"
-					if not (zg.evalwith (element.getAttribute "script"), data)
+					unless (zg.evalwith (element.getAttribute "zg-script"), data)
 						element = document.createTextNode ""
 
 			if element.nodeName is '#text'
