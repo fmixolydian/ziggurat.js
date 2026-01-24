@@ -33,7 +33,7 @@ zg.mirror_to_document = (value, name) ->
 			bind.innerText = result
 	
 	# update WHENs 
-	for toggle in zg.queryall "zg-when[name=#{name}]"
+	for toggle in zg.queryall "zg-when[zg-mirror=#{name}]"
 		show = false
 		
 		script = toggle.getAttribute 'zg-script'
