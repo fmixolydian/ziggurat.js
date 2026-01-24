@@ -3,7 +3,7 @@ zg.multimirror = class
 		@v.push data
 	
 		# update ZG-MULTIBINDs
-		for bind in zg.queryall "zg-multibind[name=#{@name}]"
+		for bind in zg.queryall "zg-multibind[zg-name=#{@name}]"
 			bind.appendChild zg.create @template, data
 		
 		data
@@ -12,7 +12,7 @@ zg.multimirror = class
 		@v.splice index, 0, element
 		if index is -1 then @push element
 
-		for bind in zg.queryall "zg-multibind[name=#{@name}]"
+		for bind in zg.queryall "zg-multibind[zg-name=#{@name}]"
 			bind.appendBefore (bind.children[index]), zg.create @template, element
 
 		element
@@ -23,12 +23,12 @@ zg.multimirror = class
 
 		if index < @v.length
 			@v.splice index, 1
-			for bind in zg.queryall "zg-multibind[name=#{@name}]"
+			for bind in zg.queryall "zg-multibind[zg-name=#{@name}]"
 				bind.removeChild bind.children[index]
 
 	clear: ->
 		@v = []
-		for bind in zg.queryall "zg-multibind[name=#{@name}]"
+		for bind in zg.queryall "zg-multibind[zg-name=#{@name}]"
 			bind.innerHTML = ""
 
 	pop: ->
