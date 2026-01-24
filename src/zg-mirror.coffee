@@ -50,11 +50,13 @@ zg.mirror_to_console = (value, name) ->
 zg.MIRROR_INDEX = {}
 zg._INIT_LIST.push ->
 	handle_syncs = ->
-		mirror_name = this.getAttribute 'zg-sync-with'
-		mirror = zg.MIRROR_INDEX[mirror_name]
-		throw "mirror #{mirror_name} doesn't exist!" unless mirror?
+		mirror = zg.MIRROR_INDEX[this.getAttribute 'zg-sync-with']
 		mirror.v = this.value # trigger setters (hopefully dont cause an endlessly recursive loop of event handlers)
 	
 	for element in zg.queryall "*[zg-sync-with]"
+		mirror_name = this.getAttribute 'zg-sync-with'
+		mirror = zg.MIRROR_INDEX[mirror_name]
+		throw "mirror #{mirror_name} doesn't exist!" unless mirror?
+
 		element.addEventListener "oninput",  handle_syncs
 		element.addEventListener "onchange", handle_syncs
