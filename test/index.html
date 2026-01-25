@@ -38,18 +38,18 @@
 			<button onclick="counter.v--">-</button>
 
 		<h2>Exhibit C: Conditional Display (using <code>zg-switch</code>)</h2>
-			<zg-when name="counter" zg-script="this % 2 == 0"><p> counter is even </p></zg-when>
-			<zg-when name="counter" zg-script="this % 2 == 1"><p> counter is odd  </p></zg-when>
+			<zg-when zg-name="counter" zg-script="this % 2 == 0"><p> counter is even </p></zg-when>
+			<zg-when zg-name="counter" zg-script="this % 2 == 1"><p> counter is odd  </p></zg-when>
 
 		<h1>Exhibit D: Chunked AJAX (using <code>zg-stream</code>)</h1>
-			<zg-multibind name="ajax_results" template="person" style="overflow-y: scroll; max-height: 200px">
+			<zg-multibind zg-name="ajax_results" template="person" style="overflow-y: scroll; max-height: 200px">
 			</zg-multibind>
 
 			<button onclick="startStreaming()">Make HTTP Request</button>
 
 		<h1>Exhibit E: Fahrenheit/Celsius converter (using <code>zg-bind-to attribute</code>)</h1>
-			<input type="text" placeholder="celsius"    oninput="fahrenheit.v = (celsius.v / (5/9)) + 32"    zg-sync-with="celsius">
-			<input type="text" placeholder="fahrenheit" oninput="celsius.v    = (fahrenheit.v - 32) * (5/9)" zg-sync-with="fahrenheit">
+			<input type="text" placeholder="celsius"    zg-sync-with="celsius">
+			<input type="text" placeholder="fahrenheit" zg-sync-with="fahrenheit">
 			
 		
 		<script src="/test.js" defer></script>

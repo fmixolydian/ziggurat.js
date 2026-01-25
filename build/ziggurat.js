@@ -89,7 +89,7 @@ Object.prototype.plus = function(other) {
   return Object.assign({}, this, other);
 };
 
-zg.VERSION = "0.11.0";
+zg.VERSION = "0.11.1";
 
 zg._INIT_LIST = [];
 
@@ -249,19 +249,20 @@ zg._INIT_LIST.push(function() {
   handle_syncs = function() {
     var mirror;
     mirror = zg.MIRROR_INDEX[this.getAttribute('zg-sync-with')];
+    console.log(this, `has been updated!!! ${mirror}`);
     return mirror.v = this.value; // trigger setters (hopefully dont cause an endlessly recursive loop of event handlers)
   };
   ref = zg.queryall("*[zg-sync-with]");
   results = [];
   for (j = 0, len = ref.length; j < len; j++) {
     element = ref[j];
-    mirror_name = this.getAttribute('zg-sync-with');
+    mirror_name = element.getAttribute('zg-sync-with');
     mirror = zg.MIRROR_INDEX[mirror_name];
     if (mirror == null) {
       throw `mirror ${mirror_name} doesn't exist!`;
     }
-    element.addEventListener("oninput", handle_syncs);
-    results.push(element.addEventListener("onchange", handle_syncs));
+    element.addEventListener("input", handle_syncs);
+    results.push(element.addEventListener("change", handle_syncs));
   }
   return results;
 });
