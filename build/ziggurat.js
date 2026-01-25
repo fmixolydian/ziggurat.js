@@ -89,7 +89,7 @@ Object.prototype.plus = function(other) {
   return Object.assign({}, this, other);
 };
 
-zg.VERSION = "0.9";
+zg.VERSION = "0.11.0";
 
 zg._INIT_LIST = [];
 
@@ -218,7 +218,7 @@ zg.mirror_to_document = function(value, name) {
       bind.innerText = result;
     }
   }
-  ref1 = zg.queryall(`zg-when[name=${name}]`);
+  ref1 = zg.queryall(`zg-when[zg-name=${name}]`);
   
   // update WHENs 
   results = [];
@@ -245,20 +245,21 @@ zg.mirror_to_console = function(value, name) {
 zg.MIRROR_INDEX = {};
 
 zg._INIT_LIST.push(function() {
-  var element, handle_syncs, j, len, ref, results;
+  var element, handle_syncs, j, len, mirror, mirror_name, ref, results;
   handle_syncs = function() {
-    var mirror, mirror_name;
-    mirror_name = this.getAttribute('zg-sync-with');
-    mirror = zg.MIRROR_INDEX[mirror_name];
-    if (mirror == null) {
-      throw `mirror ${mirror_name} doesn't exist!`;
-    }
+    var mirror;
+    mirror = zg.MIRROR_INDEX[this.getAttribute('zg-sync-with')];
     return mirror.v = this.value; // trigger setters (hopefully dont cause an endlessly recursive loop of event handlers)
   };
   ref = zg.queryall("*[zg-sync-with]");
   results = [];
   for (j = 0, len = ref.length; j < len; j++) {
     element = ref[j];
+    mirror_name = this.getAttribute('zg-sync-with');
+    mirror = zg.MIRROR_INDEX[mirror_name];
+    if (mirror == null) {
+      throw `mirror ${mirror_name} doesn't exist!`;
+    }
     element.addEventListener("oninput", handle_syncs);
     results.push(element.addEventListener("onchange", handle_syncs));
   }
@@ -513,7 +514,7 @@ zg.multimirror = class {
   push(data) {
     var bind, l, len1, ref1;
     this.v.push(data);
-    ref1 = zg.queryall(`zg-multibind[name=${this.name}]`);
+    ref1 = zg.queryall(`zg-multibind[zg-name=${this.name}]`);
     
     // update ZG-MULTIBINDs
     for (l = 0, len1 = ref1.length; l < len1; l++) {
@@ -529,7 +530,7 @@ zg.multimirror = class {
     if (index === -1) {
       this.push(element);
     }
-    ref1 = zg.queryall(`zg-multibind[name=${this.name}]`);
+    ref1 = zg.queryall(`zg-multibind[zg-name=${this.name}]`);
     for (l = 0, len1 = ref1.length; l < len1; l++) {
       bind = ref1[l];
       bind.appendBefore(bind.children[index], zg.create(this.template, element));
@@ -547,7 +548,7 @@ zg.multimirror = class {
     }
     if (index < this.v.length) {
       this.v.splice(index, 1);
-      ref1 = zg.queryall(`zg-multibind[name=${this.name}]`);
+      ref1 = zg.queryall(`zg-multibind[zg-name=${this.name}]`);
       results = [];
       for (l = 0, len1 = ref1.length; l < len1; l++) {
         bind = ref1[l];
@@ -560,7 +561,7 @@ zg.multimirror = class {
   clear() {
     var bind, l, len1, ref1, results;
     this.v = [];
-    ref1 = zg.queryall(`zg-multibind[name=${this.name}]`);
+    ref1 = zg.queryall(`zg-multibind[zg-name=${this.name}]`);
     results = [];
     for (l = 0, len1 = ref1.length; l < len1; l++) {
       bind = ref1[l];
