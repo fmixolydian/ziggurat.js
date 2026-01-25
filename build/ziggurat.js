@@ -89,7 +89,7 @@ Object.prototype.plus = function(other) {
   return Object.assign({}, this, other);
 };
 
-zg.VERSION = "0.11.1";
+zg.VERSION = "0.11.2";
 
 zg._INIT_LIST = [];
 
