@@ -89,7 +89,7 @@ Object.prototype.plus = function(other) {
   return Object.assign({}, this, other);
 };
 
-zg.VERSION = "0.11.4";
+zg.VERSION = "0.11.5";
 
 zg._INIT_LIST = [];
 
@@ -212,7 +212,7 @@ zg.mirror_to_document = function(value, name) {
     bind = ref[j];
     script = bind.getAttribute("zg-script");
     result = script != null ? zg.evalwith(script, value) : value;
-    if (bind.nodeName === "INPUT") {
+    if (bind.value != null) {
       bind.value = result;
     } else {
       bind.innerText = result;
@@ -249,7 +249,6 @@ zg._INIT_LIST.push(function() {
   handle_syncs = function() {
     var mirror;
     mirror = zg.MIRROR_INDEX[this.getAttribute('zg-sync-with')];
-    console.log(this, `has been updated!!! ${mirror}`);
     return mirror.v = this.value; // trigger setters (hopefully dont cause an endlessly recursive loop of event handlers)
   };
   ref = zg.queryall("*[zg-sync-with]");
