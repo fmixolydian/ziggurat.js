@@ -27,7 +27,7 @@ zg.mirror_to_document = (value, name) ->
 	for bind in zg.queryall "*[zg-bind-to=#{name}], *[zg-sync-with=#{name}]"
 		script = bind.getAttribute "zg-script"
 		result = if script? then zg.evalwith script, value else value
-		if bind.nodeName is "INPUT"
+		if bind.value?
 			bind.value = result
 		else
 			bind.innerText = result
@@ -51,7 +51,6 @@ zg.MIRROR_INDEX = {}
 zg._INIT_LIST.push ->
 	handle_syncs = ->
 		mirror = zg.MIRROR_INDEX[this.getAttribute 'zg-sync-with']
-		console.log this, "has been updated!!! #{mirror}"
 		mirror.v = this.value # trigger setters (hopefully dont cause an endlessly recursive loop of event handlers)
 	
 	for element in zg.queryall "*[zg-sync-with]"
